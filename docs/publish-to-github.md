@@ -137,6 +137,30 @@ git switch main                     # 回到主线
 
 改完在 README 的「时效」那句更新日期，然后 `commit` + `push` + 打新 tag。
 
+### 4.7 一次完整的「改完就推」（v1.1.0 实例）
+
+这次改的是「只问 4 项」，可以直接照抄下面这段：
+
+```bash
+cd F:\ws\刷课\github\career-planning-contest-skill
+git status                      # 先看改了哪几个文件（改完不该有意外文件）
+git add -A
+git commit -m "更加简化用户操作"   # 提交信息写清这次动了什么
+git push                        # 推到 GitHub（第一次可能要等授权弹窗）
+```
+
+推送成功后再做两件「只在网页上做」的事：
+
+1. **改项目描述**：仓库首页右侧齿轮 → Description 换成新的一句话 → Save。
+2. **发版本（可选）**：
+   ```bash
+   git tag -a v1.1.0 -m "v1.1.0 简化用户操作：只问 4 项"
+   git push origin v1.1.0
+   ```
+   然后 Releases → Draft a new release → 选 `v1.1.0` → 写三段（改了什么 / 怎么升级 / 有什么变化）。
+
+**代理没开的时候**：本地 `add` / `commit` 都能做，`push` 会超时。所以流程是「先本地改完提交，等代理开了再 push」——提交不会丢。
+
 ---
 
 ## 5. 常见报错对照
@@ -150,6 +174,8 @@ git switch main                     # 回到主线
 | `Please tell me who you are` | 没设 `user.name` / `user.email` | 补 `git config user.name/user.email`，再 `git commit --amend --reset-author` |
 | `Support for password authentication was removed` | GitHub 不再接受账号密码 | 用 PAT 或 GCM/SSH |
 | 推送很慢/超时 | 网络到 GitHub 不通 | 开代理后重试；或 `git config --global http.proxy http://127.0.0.1:7897`（端口按你的代理填） |
+| `schannel: AcquireCredentialsHandle failed: SEC_E_NO_CREDENTIALS (0x8009030e)` | Windows 自带的 TLS 后端（schannel）拿不到凭据 | 仓库内改用 OpenSSL 后端并显式给代理：`git config http.sslBackend openssl` + `git config http.proxy http://127.0.0.1:7897` |
+| `fatal error - couldn't create signal pipe, Win32 error 5` / `failed to execute prompt script (exit code 66)` | git 在受限沙箱里调不起凭据管理器（GCM） | 在放行模式下重跑 `git push`；随后浏览器授权页由本人点绿色 `Authorize git-ecosystem` |
 
 ---
 

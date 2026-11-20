@@ -1,0 +1,21 @@
+# 报名/参赛产生的材料，不进仓库
+*.pdf
+*.pptx
+*.ppt
+*.docx
+*.doc
+
+# 预览与调试产物
+_preview*.png
+_preview*.jpg
+_slides/
+*.tmp
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+node_modules/
+.venv/
+__pycache__/
+.vscode/
+.idea/
